@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+ml/features.csv
+ml/model.tflite
+ml/norm_stats.h
+ml/labels.txt
+
+# PlatformIO
+.pio/
+.vscode/
+
+# ML artefatos grandes / datasets
+datasets/
+*.h5

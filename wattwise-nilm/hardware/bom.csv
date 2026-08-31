@@ -1,0 +1,23 @@
+ref,qty,value,part,lcsc,notes
+U1,1,ESP32-S3-WROOM-1-N16R8,ESP32-S3-WROOM-1-N16R8,C2913200,MCU 16MB flash / 8MB PSRAM (octal)
+U2,1,HLK-5M05,HLK-5M05,C2887475,AC-DC isolado 5V/5W (lado de rede)
+U3,1,TLV75733PDBVR,TLV75733,C351443,LDO 3.3V baixo ruido p/ analogico
+U4,1,MCP6002,MCP6002,C7581,Op-amp duplo (buffer de bias Vcc/2 e sinais)
+U5,1,DS3231SN,DS3231SN,C9866,RTC I2C com cristal integrado
+U6,1,USBLC6-2SC6,USBLC6-2SC6,C7519,Protecao ESD USB-C
+J1,1,USB-C,TYPE-C-31-M-12,C165948,Conector USB-C
+J2,1,microSD,TF-01A,C91145,Slot microSD
+J3,3,3.5mm,Screw terminal 2P,C8465,Entradas dos CT clamps (I1/I2/I3)
+J4,1,3.5mm,Screw terminal 2P,C8465,Entrada de tensao de rede (isolada via T1)
+J5,1,3.5mm,Screw terminal 3P,C8465,Rede: L / N / (PE) para HLK e ZMPT
+T1,1,ZMPT101B,ZMPT101B,C114104,Transformador de tensao de precisao (medicao isolada)
+K1,2,SSR,G3MB-202P,C113505,Rele estado solido p/ automacao (saidas)
+OK1,2,PC817,PC817,C6363,Optoacoplador de acionamento dos SSR
+D1,3,BAT54S,BAT54S,C32083,Clamp de protecao dos pinos de ADC
+RV1,1,MOV 275V,7D471K,C702343,Varistor de protecao na entrada de rede
+RT1,1,NTC 10D-9,MF72-10D9,C155698,Limitador de inrush
+F1,1,Fuse 1A,Fuse holder + 1A,C2687236,Fusivel de entrada
+LED1,1,WS2812B,WS2812B-2020,C965555,LED RGB de status
+SW1,1,tactile,Tactile 6mm,C318884,Botao (rotular aparelho / boot)
+R_burden,3,22,Res 0805 22R 1%,C17601,Resistor de burden por canal de corrente (dimensionar)
+C_bulk,4,100uF,Cap elec 100uF,C2686622,Bulk de alimentacao (pico TX Wi-Fi)
