@@ -38,6 +38,9 @@ const uint8_t LED_BRIGHTNESS = 130;
 #define USE_BUZZER 1
 const int BUZZER_PIN = 4;
 
+#define ENSURE_NUMLOCK 0
+const unsigned long ALT_STEP_MS = 16;
+
 enum ActionType { SIMPLE_CMD, AUTO_CHAIN, AUTO_CHAIN2, AUTO_CHAIN3, SAFE_ON, SAFE_OFF, BOOT_RECOVERY, TOGGLE_LAYOUT, DRIVER_INJECT };
 
 struct Mode {
@@ -121,28 +124,62 @@ void flashConfirm() {
   showModeColor();
 }
 
+const uint8_t KP_USAGE[10] = {0x62, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x61};
+
+void altCode(int code) {
+  char buf[6];
+  snprintf(buf, sizeof(buf), "%d", code);
+  Keyboard.press(KEY_LEFT_ALT);
+  delay(ALT_STEP_MS);
+  for (int i = 0; buf[i]; i++) {
+    uint8_t u = KP_USAGE[buf[i] - '0'];
+    Keyboard.pressRaw(u);
+    delay(ALT_STEP_MS);
+    Keyboard.releaseRaw(u);
+    delay(ALT_STEP_MS);
+  }
+  Keyboard.release(KEY_LEFT_ALT);
+  delay(ALT_STEP_MS);
+}
+
+void typeCmd(const char* s) {
+  for (const char* p = s; *p; p++) {
+    switch (*p) {
+      case '/':  altCode(47);  break;
+      case '\\': altCode(92);  break;
+      case ':':  altCode(58);  break;
+      case '{':  altCode(123); break;
+      case '}':  altCode(125); break;
+      case '"':  altCode(34);  break;
+      case '=':  altCode(61);  break;
+      default:   Keyboard.write((uint8_t)*p); delay(3); break;
+    }
+  }
+  Keyboard.write('\n');
+}
+
 void runChain(int first, int last) {
   for (int i = first; i <= last; i++) {
-    Keyboard.println(modes[i].cmd);
+    typeCmd(modes[i].cmd);
     setLed(modes[i].r, modes[i].g, modes[i].b);
     delay(CHAIN_STEP_DELAY_MS);
   }
 }
 
 void runSafeModeAndRestart(bool turnOn) {
-  Keyboard.println(turnOn ? SAFEBOOT_ON : SAFEBOOT_OFF);
+  typeCmd(turnOn ? SAFEBOOT_ON : SAFEBOOT_OFF);
   flashConfirm();
   delay(DELAY_BETWEEN_COMMANDS_MS);
-  Keyboard.println(RESTART_CMD);
+  typeCmd(RESTART_CMD);
   setLed(255, 128, 0);
   delay(400);
 }
 
 void runBootRecoveryAndRestart() {
-  Keyboard.println(BOOT_TO_RE);
+  typeCmd(BOOT_TO_RE);
   flashConfirm();
   delay(DELAY_BETWEEN_COMMANDS_MS);
-  Keyboard.println(RESTART_CMD);
+  typeCmd(RESTART_CMD);
   setLed(255, 128, 0);
   delay(400);
 }
@@ -190,15 +227,15 @@ int promptPartitionNumber() {
 }
 
 bool runDriverInject() {
-  Keyboard.println(drvloadCmdBuf);    setLed(0, 0, 255);     delay(DRVLOAD_DELAY_MS);
-  Keyboard.println("diskpart");       setLed(150, 0, 255);   delay(DISKPART_LAUNCH_MS);
-  Keyboard.println("rescan");         setLed(150, 0, 255);   delay(CHAIN_STEP_DELAY_MS);
-  Keyboard.println(selDiskCmdBuf);    setLed(150, 0, 255);   delay(CHAIN_STEP_DELAY_MS);
-  Keyboard.println("list partition"); setLed(0, 200, 255);   delay(CHAIN_STEP_DELAY_MS);
+  typeCmd(drvloadCmdBuf);    setLed(0, 0, 255);     delay(DRVLOAD_DELAY_MS);
+  typeCmd("diskpart");       setLed(150, 0, 255);   delay(DISKPART_LAUNCH_MS);
+  typeCmd("rescan");         setLed(150, 0, 255);   delay(CHAIN_STEP_DELAY_MS);
+  typeCmd(selDiskCmdBuf);    setLed(150, 0, 255);   delay(CHAIN_STEP_DELAY_MS);
+  typeCmd("list partition"); setLed(0, 200, 255);   delay(CHAIN_STEP_DELAY_MS);
 
   int part = promptPartitionNumber();
   if (part <= 0) {
-    Keyboard.println("exit");
+    typeCmd("exit");
     setLed(255, 0, 0);
     beepCancelled();
     delay(400);
@@ -209,10 +246,10 @@ bool runDriverInject() {
   snprintf(selPartCmdBuf, sizeof(selPartCmdBuf), "select partition %d", part);
   for (int i = 0; i < part; i++) { beep(2200, 60); delay(120); }
 
-  Keyboard.println(selPartCmdBuf);    setLed(255, 105, 180); delay(CHAIN_STEP_DELAY_MS);
-  Keyboard.println(assignCmdBuf);     setLed(0, 255, 120);   delay(CHAIN_STEP_DELAY_MS);
-  Keyboard.println("exit");           setLed(0, 255, 120);   delay(DELAY_BETWEEN_COMMANDS_MS);
-  Keyboard.println(dismInjectCmdBuf); setLed(0, 255, 0);     delay(400);
+  typeCmd(selPartCmdBuf);    setLed(255, 105, 180); delay(CHAIN_STEP_DELAY_MS);
+  typeCmd(assignCmdBuf);     setLed(0, 255, 120);   delay(CHAIN_STEP_DELAY_MS);
+  typeCmd("exit");           setLed(0, 255, 120);   delay(DELAY_BETWEEN_COMMANDS_MS);
+  typeCmd(dismInjectCmdBuf); setLed(0, 255, 0);     delay(400);
   return true;
 }
 
@@ -220,7 +257,7 @@ bool executeCurrentMode() {
   const Mode& m = modes[visibleModeIndices[currentMode]];
   switch (m.type) {
     case SIMPLE_CMD:
-      Keyboard.println(m.cmd);
+      typeCmd(m.cmd);
       flashConfirm();
       return true;
     case AUTO_CHAIN:
@@ -299,6 +336,13 @@ void setup() {
   Keyboard.begin();
 
   delay(3000);
+
+#if ENSURE_NUMLOCK
+  Keyboard.pressRaw(0x53);
+  delay(ALT_STEP_MS);
+  Keyboard.releaseRaw(0x53);
+  delay(ALT_STEP_MS);
+#endif
 
   showModeColor();
   beepStartup();
