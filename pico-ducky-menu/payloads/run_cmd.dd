@@ -1,0 +1,27 @@
+# Payload: Abre Command Prompt e mostra informações da rede
+# Demonstra execução de comando sem abrir editor de texto
+# Funciona em Windows
+
+DELAY 1000
+
+# Abre Command Prompt (alternativa: CTRL+SHIFT+ESCAPE pra TaskManager)
+GUI r
+DELAY 500
+
+STRING cmd
+ENTER
+DELAY 1000
+
+# Mostra informações de rede
+STRING ipconfig
+ENTER
+DELAY 1000
+
+# Lista computadores conectados na rede
+STRING net view
+ENTER
+DELAY 2000
+
+# Sai do CMD
+STRING exit
+ENTER

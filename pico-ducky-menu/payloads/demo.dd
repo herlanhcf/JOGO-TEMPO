@@ -1,0 +1,22 @@
+# Payload de Demonstração - Abre Bloco de Notas com Mensagem
+# Funciona em Windows
+# Tempo total: ~5 segundos
+
+# Aguarda 500ms (garante que a janela do alvo está em foco)
+DELAY 500
+
+# Abre a caixa de diálogo "Executar" (Windows+R)
+GUI r
+DELAY 500
+
+# Digita "notepad" pra abrir o Bloco de Notas
+STRING notepad
+ENTER
+DELAY 1000
+
+# Agora o Bloco de Notas abriu. Digita uma mensagem
+STRING Sistema de Ducky Pico Ativo!
+ENTER
+ENTER
+STRING Timestamp: 2024-09-07
+DELAY 500

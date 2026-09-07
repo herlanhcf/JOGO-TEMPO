@@ -1,0 +1,109 @@
+# Payload Educacional - Demonstração de Risco de Keystroke Injection
+# Uso: Apresentação em TCC / Ambiente Controlado
+# Este payload NÃO rouба dados, apenas demonstra a vulnerabilidade
+
+# Aguarda a máquina ficar pronta
+DELAY 2000
+
+# Abre a caixa de diálogo Executar (Windows+R)
+GUI r
+DELAY 800
+
+# Abre o Bloco de Notas (pode usar qualquer editor)
+STRING notepad
+ENTER
+DELAY 1500
+
+# === DEMONSTRAÇÃO COMEÇA AQUI ===
+
+# Escreve um header educacional
+STRING ╔═════════════════════════════════════════════════════╗
+ENTER
+STRING ║                                                     ║
+ENTER
+STRING ║  DEMONSTRAÇÃO DE VULNERABILIDADE                   ║
+ENTER
+STRING ║  Keystroke Injection via BadUSB (Pico Ducky)       ║
+ENTER
+STRING ║                                                     ║
+ENTER
+STRING ║  Este é um EXEMPLO EDUCACIONAL                     ║
+ENTER
+STRING ║  Apenas para propósitos de TCC/Laboratório         ║
+ENTER
+STRING ║                                                     ║
+ENTER
+STRING ╚═════════════════════════════════════════════════════╝
+ENTER
+ENTER
+
+# Mostra data/hora de execução
+STRING Executado em:
+ENTER
+STRING Data: 2024-09-07
+ENTER
+STRING Horário: 14:30:00
+ENTER
+ENTER
+
+# Demonstra o risco
+STRING === O QUE FOI DEMONSTRADO ===
+ENTER
+ENTER
+STRING 1. Este dispositivo foi reconhecido como teclado USB
+ENTER
+STRING 2. Sem qualquer intervenção do usuário, começou a digitar
+ENTER
+STRING 3. O sistema confiou 100% no input, sem validação
+ENTER
+ENTER
+
+# Conta sobre a vulnerabilidade
+STRING === VULNERABILIDADE ===
+ENTER
+ENTER
+STRING O Pico Ducky explora a confiança cega do USB:
+ENTER
+STRING - O sistema operacional confia em qualquer teclado USB
+ENTER
+STRING - Não há verificação de autenticidade do dispositivo
+ENTER
+STRING - Keystroke injection é executado ANTES de any antivírus
+ENTER
+ENTER
+
+# Mitigações
+STRING === MITIGAÇÕES POSSÍVEIS ===
+ENTER
+ENTER
+STRING 1. Desabilitar portas USB em ambiente sensível
+ENTER
+STRING 2. Usar soft baseada em HID whitelist
+ENTER
+STRING 3. Implementar USB Restricted Mode (como iOS)
+ENTER
+STRING 4. Treinar usuários sobre segurança física
+ENTER
+ENTER
+
+# Conclusão
+STRING === CONCLUSÃO ===
+ENTER
+ENTER
+STRING Este experimento demonstra:
+ENTER
+STRING - Facilidade de construção (R$ 40, sem solda)
+ENTER
+STRING - Alto impacto (bypass de defesas lógicas)
+ENTER
+STRING - Importância de segurança física + lógica
+ENTER
+ENTER
+
+# Salva o arquivo
+DELAY 500
+CTRL s
+DELAY 500
+STRING pico_ducky_demo.txt
+ENTER
+DELAY 500
